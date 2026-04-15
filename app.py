@@ -497,9 +497,9 @@ with st.expander("➕ Add Lucky Event Numbers", expanded=True):
     lucky_input_text = st.text_area(
         "One entry per line: `NUMBER, Description`",
         placeholder=(
-            "0616, Father's block address at Mandai\n"
-            "5570, Ah Gong Ah Ma's new plot number\n"
-            "2702, My birthday\n"
+            "8888, Grandfather's block address at Mandai\n"
+            "8888, Ah Gong Ah Ma's new plot number\n"
+            "1111, My birthday\n"
             "1234, Car plate of taxi after reunion dinner"
         ),
         height=150,
