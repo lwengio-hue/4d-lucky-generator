@@ -18,6 +18,20 @@ import os
 import io
 import tempfile
 
+import urllib.request
+
+# ── Auto-load DB from GitHub if no upload ────────────────────────────────────
+GITHUB_DB_URL = (
+    "https://github.com/lwengio-hue/4d-lucky-generator"
+    "/tree/main/data/4d_results.db"          # ← adjust path if needed
+)
+
+@st.cache_data(show_spinner="Loading latest 4D data from GitHub...")
+def load_db_from_github():
+    """Download DB from GitHub repo into memory."""
+    with urllib.request.urlopen(GITHUB_DB_URL) as response:
+        return response.read()
+
 # ── Page config ───────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="🎱 4D Lucky Generator",
@@ -453,17 +467,17 @@ st.markdown('<div class="sub-title">Singapore Pools 4D · Statistical + Lucky Fe
 
 # Check DB
 if uploaded is None:
-    # Try to use bundled DB if present
-    bundled = 'data/4d_results.db'
-    if os.path.exists(bundled):
-        with open(bundled, 'rb') as f:
-            db_bytes = f.read()
-        st.info("📂 Using bundled `data/4d_results.db`")
-    else:
-        st.warning("👈 Please upload your `4d_results.db` file in the sidebar to get started.")
+    try:
+        import urllib.request
+        with urllib.request.urlopen(GITHUB_4D_DB_URL) as resp:
+            db_bytes = resp.read()
+        st.info("📂 Using latest 4D data from GitHub · Updates after every draw")
+    except Exception as e:
+        st.warning(f"Could not load from GitHub ({e}). Please upload your 4d_results.db manually.")
         st.stop()
 else:
     db_bytes = uploaded.read()
+    st.cache_data.clear()  # clear cache so upload takes priority
 
 # Load data
 with st.spinner("Loading database..."):
