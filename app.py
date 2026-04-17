@@ -21,15 +21,15 @@ import tempfile
 import urllib.request
 
 # ── Auto-load DB from GitHub if no upload ────────────────────────────────────
-GITHUB_DB_URL = (
+GITHUB_4D_DB_URL = (
     "https://github.com/lwengio-hue/4d-lucky-generator"
-    "/tree/main/data/4d_results.db"          # ← adjust path if needed
+    "/raw/main/data/4d_results.db"          # ← adjust path if needed
 )
 
 @st.cache_data(show_spinner="Loading latest 4D data from GitHub...")
 def load_db_from_github():
     """Download DB from GitHub repo into memory."""
-    with urllib.request.urlopen(GITHUB_DB_URL) as response:
+    with urllib.request.urlopen(GITHUB_4D_DB_URL) as response:
         return response.read()
 
 # ── Page config ───────────────────────────────────────────────────────────────
